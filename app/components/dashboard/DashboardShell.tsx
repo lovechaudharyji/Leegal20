@@ -48,24 +48,6 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 
-const TOP_CLOUDS = [
-  {
-    key: "cloud-a",
-    className:
-      "left-[1236px] top-[120px] h-[147.866px] w-[256.338px] bg-[url('/cloud-020-a.png')] opacity-[0.38] blur-[0.6px]",
-  },
-  {
-    key: "cloud-b",
-    className:
-      "left-[-139px] top-[240px] h-[147.866px] w-[467.069px] bg-[url('/cloud-020-b.png')] opacity-[0.26] blur-[0.8px]",
-  },
-  {
-    key: "cloud-c",
-    className:
-      "left-[-119px] top-[40px] h-[147.866px] w-[467.069px] bg-[url('/cloud-020-c.png')] opacity-[0.42] blur-[0.7px]",
-  },
-] as const;
-
 type NavItem = {
   label: string;
   href: string;
@@ -159,19 +141,7 @@ export function DashboardShell({ variant, children }: DashboardShellProps) {
         ["--ring" as any]: "#3960f9",
       }}
     >
-      {/* Landing-page style background + clouds */}
-      <div className="pointer-events-none absolute inset-0 bg-[#F5F5F5] bg-[linear-gradient(180deg,rgba(244,244,245,0.35)_42.69%,rgba(57,96,249,0.35)_100%)]" />
-      {TOP_CLOUDS.map((c) => (
-        <div
-          key={c.key}
-          aria-hidden="true"
-          className={[
-            "pointer-events-none absolute z-0",
-            "bg-cover bg-center mix-blend-screen",
-            c.className,
-          ].join(" ")}
-        />
-      ))}
+
 
       <div className="relative z-10 flex w-full gap-6 px-6 py-6">
         {/* Sidebar */}

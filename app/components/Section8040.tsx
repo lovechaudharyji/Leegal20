@@ -118,13 +118,13 @@ function FeatureCard({
   return (
     <div
       className={[
-        "min-h-[106px] w-[384px] rounded-[16px] border-[1.5px] border-[#F4F4F4] bg-white/60",
-        "p-6 text-left shadow-sm backdrop-blur-[2px]",
+        "min-h-[140px] w-[400px] shrink-0 rounded-[20px] border border-gray-100 bg-white",
+        "p-6 text-left shadow-[0px_2px_4px_rgba(0,0,0,0.02),0px_4px_8px_rgba(0,0,0,0.04)] hover:shadow-lg transition-shadow duration-300",
       ].join(" ")}
     >
-      <div className="flex h-full flex-col">
+      <div className="flex h-full flex-col justify-between">
         <div
-          className="text-[24px] font-semibold leading-[140%] text-[#000000]"
+          className="text-[20px] font-bold leading-[130%] text-[#141B34]"
           style={{
             fontFamily:
               '"Inter Display", Inter, var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial',
@@ -133,20 +133,30 @@ function FeatureCard({
           {title}
         </div>
         <div
-          className="mt-2 line-clamp-3 text-[16px] font-medium leading-[150%] text-[#555555]"
+          className="mt-3 line-clamp-3 text-[15px] font-medium leading-[150%] text-[#555555]"
           style={{
             fontFamily:
               '"Inter Display", Inter, var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial',
           }}
         >
           {description}{" "}
-          <span className="inline-block align-text-bottom text-[#555555]">
-            <img
-              src="/arrow-left-02.svg"
-              alt=""
-              aria-hidden="true"
-              className="relative top-[2px] ml-1 inline-block size-5 align-text-bottom"
-            />
+          <span className="inline-block align-text-bottom text-[#3960F9]">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="relative top-[2px] ml-1 inline-block size-4 align-text-bottom"
+            >
+              <path
+                d="M4.66669 11.3333L11.3334 4.66663M11.3334 4.66663H4.66669M11.3334 4.66663V11.3333"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </span>
         </div>
       </div>
@@ -210,14 +220,14 @@ function Section8040Placeholder() {
       <div className="mx-auto mt-6 w-full max-w-[1600px] px-6">
         {/* Marquee: all cards (right -> left, infinite loop) */}
         <div
-          className="marquee mx-auto w-full"
+          className="marquee flex w-full overflow-hidden gap-6 mx-auto"
           style={{
             // tweak these numbers to adjust spacing/speed
             ["--marquee-gap" as any]: "24px",
             ["--marquee-duration" as any]: "42s",
           }}
         >
-          <div className="marquee__track py-2">
+          <div className="marquee__track flex min-w-full shrink-0 items-center gap-6 py-2">
             {[...FEATURE_CARDS, ...FEATURE_CARDS].map((c, idx) => (
               <FeatureCard
                 key={`${c.title}-${idx}`}
@@ -230,13 +240,13 @@ function Section8040Placeholder() {
 
         {/* Second line: left -> right */}
         <div
-          className="marquee marquee--reverse mx-auto mt-6 w-full"
+          className="marquee marquee--reverse flex w-full overflow-hidden gap-6 mx-auto mt-6"
           style={{
             ["--marquee-gap" as any]: "24px",
             ["--marquee-duration" as any]: "46s",
           }}
         >
-          <div className="marquee__track py-2">
+          <div className="marquee__track flex min-w-full shrink-0 items-center gap-6 py-2">
             {[...FEATURE_CARDS, ...FEATURE_CARDS].map((c, idx) => (
               <FeatureCard
                 key={`${c.title}-reverse-${idx}`}
@@ -249,13 +259,13 @@ function Section8040Placeholder() {
 
         {/* Third line: right -> left */}
         <div
-          className="marquee mx-auto mt-6 w-full"
+          className="marquee flex w-full overflow-hidden gap-6 mx-auto mt-6"
           style={{
             ["--marquee-gap" as any]: "24px",
             ["--marquee-duration" as any]: "44s",
           }}
         >
-          <div className="marquee__track py-2">
+          <div className="marquee__track flex min-w-full shrink-0 items-center gap-6 py-2">
             {[...cardsShifted, ...cardsShifted].map((c, idx) => (
               <FeatureCard
                 key={`${c.title}-third-${idx}`}

@@ -73,29 +73,28 @@ export function Hero() {
 
           <a
             href="#"
-            className="animated-border inline-flex flex-col items-center justify-center gap-[10px] rounded-[8px] border border-white px-[16px] py-[18px] text-sm font-semibold text-black"
+            className="animated-border group relative inline-flex flex-col items-center justify-center gap-[10px] rounded-[8px] border border-white text-[15px] font-semibold text-black transition-colors"
             style={{
+              padding: "18px 16px",
               background: "rgba(67, 104, 249, 0.02)",
               boxShadow: "1px 2px 8px 0 rgba(0, 0, 0, 0.02)",
             }}
           >
             <svg
-              className="animated-border__svg"
-              viewBox="0 0 100 40"
-              preserveAspectRatio="none"
-              aria-hidden="true"
+              className="animated-border__svg absolute inset-0 size-full"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <rect
-                className="dash dash--head"
-                x="1"
-                y="1"
-                width="98"
-                height="38"
+                x="0.5"
+                y="0.5"
+                width="calc(100% - 1px)"
+                height="calc(100% - 1px)"
                 rx="8"
-                ry="8"
+                className="dash"
+                fill="none"
               />
             </svg>
-            Watch How It Works
+            <span className="relative z-10">Watch Video</span>
           </a>
         </div>
 
