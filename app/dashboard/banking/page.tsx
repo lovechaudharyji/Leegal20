@@ -6,8 +6,6 @@ import { Download, Landmark, Link as LinkIcon, Receipt, ShieldCheck } from "luci
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { PremiumLock } from "@/components/ui/premium-lock";
-import { getSession } from "@/lib/localAuth";
 import {
   Table,
   TableBody,
@@ -46,14 +44,6 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default function DashboardBankingPage() {
-  const [isPremium, setIsPremium] = useState(false);
-
-  useEffect(() => {
-    getSession().then((session) => {
-      setIsPremium(session?.plan === "premium");
-    });
-  }, []);
-
   return (
     <div className="space-y-6">
       <div>
@@ -198,14 +188,12 @@ export default function DashboardBankingPage() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="inline-flex items-center gap-2">
-                      <PremiumLock isPremium={isPremium} triggerLabel="Upgrade">
-                        <Button asChild variant="outline" className="h-9 rounded-xl px-3">
-                          <a href="/file.svg" download>
-                            <Download className="mr-2 size-4" />
-                            Download
-                          </a>
-                        </Button>
-                      </PremiumLock>
+                      <Button asChild variant="outline" className="h-9 rounded-xl px-3">
+                        <a href="/file.svg" download>
+                          <Download className="mr-2 size-4" />
+                          Download
+                        </a>
+                      </Button>
                       {inv.status === "Pending" ? (
                         <Button className="h-9 rounded-xl px-3">Pay now</Button>
                       ) : (

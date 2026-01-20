@@ -9,9 +9,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { PremiumLock } from "@/components/ui/premium-lock";
-import { getSession } from "@/lib/localAuth";
-
 import { RESOURCES, type ResourceCategory } from "./resources";
 
 const CATEGORIES: readonly (ResourceCategory | "All")[] = [
@@ -25,11 +22,6 @@ const CATEGORIES: readonly (ResourceCategory | "All")[] = [
 export function ResourcesHub() {
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("All");
   const [query, setQuery] = useState("");
-  const [isPremium, setIsPremium] = useState(false);
-
-  useEffect(() => {
-    getSession().then(s => setIsPremium(s?.plan === "premium"));
-  }, []);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -117,7 +109,6 @@ export function ResourcesHub() {
           ) : (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
               {filtered.map((r) => {
-                const isLocked = !isPremium && (r.category === "Stripe" || r.category === "US Tax Basics");
                 return (
                 <Card key={r.slug} className="rounded-2xl">
                   <CardHeader>
@@ -142,11 +133,9 @@ export function ResourcesHub() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <PremiumLock isPremium={!isLocked} triggerLabel="Upgrade to read">
                       <Button asChild variant="outline" className="w-full rounded-xl">
                         <Link href={`/dashboard/guides/${r.slug}`}>Open resource</Link>
                       </Button>
-                    </PremiumLock>
                   </CardContent>
                 </Card>
               )})}

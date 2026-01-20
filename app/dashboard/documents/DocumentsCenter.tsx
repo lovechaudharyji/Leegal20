@@ -16,7 +16,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { PremiumLock } from "@/components/ui/premium-lock";
 import { getSession } from "@/lib/localAuth";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -64,14 +63,10 @@ export function DocumentsCenter() {
   const [docs, setDocs] = useState<DocumentRow[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Check plan (mock/local storage)
-  const [isPremium, setIsPremium] = useState(false);
-
   useEffect(() => {
     async function load() {
       try {
         const session = await getSession();
-        setIsPremium(session?.plan === "premium");
         
         if (session) {
             const supabase = createClient();
@@ -181,19 +176,15 @@ export function DocumentsCenter() {
         </div>
         <div className="flex flex-wrap gap-2">
           <input ref={uploadInputRef} type="file" className="hidden" onChange={handleUpload} />
-          <PremiumLock isPremium={isPremium} triggerLabel="Upgrade to Upload">
-            <Button variant="outline" className="rounded-xl" onClick={triggerUpload}>
-              <Upload className="size-4" />
-              Upload
-            </Button>
-          </PremiumLock>
-          <PremiumLock isPremium={isPremium} triggerLabel="Upgrade to Download">
-            <Button className="rounded-xl" asChild>
-              <a href="/file.svg" download>
-                Download <Download className="size-4" />
-              </a>
-            </Button>
-          </PremiumLock>
+          <Button variant="outline" className="rounded-xl" onClick={triggerUpload}>
+            <Upload className="size-4" />
+            Upload
+          </Button>
+          <Button className="rounded-xl" asChild>
+            <a href="/file.svg" download>
+              Download <Download className="size-4" />
+            </a>
+          </Button>
         </div>
       </div>
 
@@ -292,26 +283,22 @@ export function DocumentsCenter() {
                           >
                             <Eye className="size-4 text-[#555555]" />
                           </Button>
-                          <PremiumLock isPremium={isPremium} triggerLabel="">
-                            <Button variant="ghost" size="icon" className="size-8">
-                              <Download className="size-4 text-[#555555]" />
-                            </Button>
-                          </PremiumLock>
+                          <Button variant="ghost" size="icon" className="size-8">
+                            <Download className="size-4 text-[#555555]" />
+                          </Button>
                         </div>
                       ) : (
-                        <PremiumLock isPremium={isPremium} triggerLabel="Upload">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="text-xs text-[#3960F9]"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              triggerUpload();
-                            }}
-                          >
-                            Upload
-                          </Button>
-                        </PremiumLock>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-xs text-[#3960F9]"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            triggerUpload();
+                          }}
+                        >
+                          Upload
+                        </Button>
                       )}
                     </TableCell>
                   </TableRow>

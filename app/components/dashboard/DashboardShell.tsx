@@ -36,7 +36,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut, getSession, upgradeUser } from "@/lib/localAuth";
-import { PremiumLock } from "@/components/ui/premium-lock";
 import {
   Dialog,
   DialogContent,
@@ -141,7 +140,8 @@ export function DashboardShell({ variant, children }: DashboardShellProps) {
         ["--ring" as any]: "#3960f9",
       }}
     >
-
+      {/* Landing-page style background without TOP_CLOUDS error */}
+      <div className="pointer-events-none absolute inset-0 bg-[#F5F5F5] bg-[linear-gradient(180deg,rgba(244,244,245,0.35)_42.69%,rgba(57,96,249,0.35)_100%)]" />
 
       <div className="relative z-10 flex w-full gap-6 px-6 py-6">
         {/* Sidebar */}

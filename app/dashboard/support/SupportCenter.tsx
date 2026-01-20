@@ -18,7 +18,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { PremiumLock } from "@/components/ui/premium-lock";
 import { getSession } from "@/lib/localAuth";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -59,12 +58,9 @@ export function SupportCenter() {
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [files, setFiles] = useState<File[]>([]);
 
-  const [isPremium, setIsPremium] = useState(false);
-
   useEffect(() => {
     async function load() {
       const session = await getSession();
-      setIsPremium(session?.plan === "premium");
       
       if (session) {
         const supabase = createClient();
@@ -160,12 +156,10 @@ export function SupportCenter() {
             <CardTitle className="text-lg font-semibold text-[#141B34]">Support Tickets</CardTitle>
             <CardDescription>Track status of your requests.</CardDescription>
           </div>
-          <PremiumLock isPremium={isPremium} triggerLabel="New Ticket">
-            <Button onClick={openNewTicket} size="sm" className="gap-2 rounded-lg text-sm">
-              <Plus className="size-4" />
-              New Ticket
-            </Button>
-          </PremiumLock>
+          <Button onClick={openNewTicket} size="sm" className="gap-2 rounded-lg text-sm">
+            <Plus className="size-4" />
+            New Ticket
+          </Button>
         </div>
       </CardHeader>
 
@@ -268,12 +262,10 @@ export function SupportCenter() {
             <span>Live Chat (Coming Soon)</span>
           </div>
           <div className="h-4 w-px bg-border" />
-          <PremiumLock isPremium={isPremium} triggerLabel="Book a call">
-             <div className="flex items-center gap-2 cursor-pointer hover:text-primary">
-                <Calendar className="size-4" />
-                <span>Book a call</span>
-             </div>
-          </PremiumLock>
+          <div className="flex items-center gap-2 cursor-pointer hover:text-primary">
+             <Calendar className="size-4" />
+             <span>Book a call</span>
+          </div>
         </div>
       </div>
     </Card>

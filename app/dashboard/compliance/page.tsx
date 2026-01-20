@@ -7,8 +7,6 @@ import { ArrowUpRight, CalendarClock, RefreshCw, ShieldCheck, TriangleAlert } fr
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { PremiumLock } from "@/components/ui/premium-lock";
-import { getSession } from "@/lib/localAuth";
 
 const DEADLINES = [
   {
@@ -30,14 +28,6 @@ const STATUS = {
 } as const;
 
 export default function DashboardCompliancePage() {
-  const [isPremium, setIsPremium] = useState(false);
-
-  useEffect(() => {
-    getSession().then((session) => {
-      setIsPremium(session?.plan === "premium");
-    });
-  }, []);
-
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -140,33 +130,27 @@ export default function DashboardCompliancePage() {
             <div className="mt-2 text-sm font-medium text-muted-foreground">
               We prepare and submit your annual report on time.
             </div>
-            <PremiumLock isPremium={isPremium} triggerLabel="Upgrade to File">
-              <Button className="mt-4 w-full rounded-xl">
-                Start annual report <ArrowUpRight className="size-4" />
-              </Button>
-            </PremiumLock>
+            <Button className="mt-4 w-full rounded-xl">
+              Start annual report <ArrowUpRight className="size-4" />
+            </Button>
           </div>
           <div className="rounded-2xl border border-border bg-white/60 p-4 shadow-sm">
             <div className="text-sm font-semibold text-[#141B34]">BOI Filing Help</div>
             <div className="mt-2 text-sm font-medium text-muted-foreground">
               Get guided support for FinCEN BOI submission.
             </div>
-            <PremiumLock isPremium={isPremium} triggerLabel="Upgrade for BOI Help">
-              <Button variant="outline" className="mt-4 w-full rounded-xl">
-                Get BOI help <ArrowUpRight className="size-4" />
-              </Button>
-            </PremiumLock>
+            <Button variant="outline" className="mt-4 w-full rounded-xl">
+              Get BOI help <ArrowUpRight className="size-4" />
+            </Button>
           </div>
           <div className="rounded-2xl border border-border bg-white/60 p-4 shadow-sm">
             <div className="text-sm font-semibold text-[#141B34]">Registered Agent Renewal</div>
             <div className="mt-2 text-sm font-medium text-muted-foreground">
               Renew service to stay reachable for official notices.
             </div>
-            <PremiumLock isPremium={isPremium} triggerLabel="Upgrade to Renew">
-              <Button variant="outline" className="mt-4 w-full rounded-xl">
-                Renew agent <RefreshCw className="size-4" />
-              </Button>
-            </PremiumLock>
+            <Button variant="outline" className="mt-4 w-full rounded-xl">
+              Renew agent <RefreshCw className="size-4" />
+            </Button>
           </div>
         </CardContent>
       </Card>
