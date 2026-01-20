@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "figma-remote": {
+      "url": "https://mcp.figma.com"
+    },
+    "supabase": {
+      "command": "node",
+      "args": ["scripts/mcp-supabase.js"]
+    }
+  }
+}
+
+
