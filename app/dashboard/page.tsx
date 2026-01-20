@@ -107,10 +107,12 @@ export default function DashboardPage() {
                 '"Inter Display", Inter, var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial',
             }}
           >
-            Your workspace
+            {isPremium ? "Your Premium Workspace" : "Your Workspace"}
           </h1>
           <p className="mt-2 text-[15px] font-medium text-muted-foreground">
-            Track formation, compliance, documents, and support in one place.
+            {isPremium
+              ? "Everything is optimized for your business growth."
+              : "Track formation, compliance, documents, and support in one place."}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -124,6 +126,27 @@ export default function DashboardPage() {
           </Button>
         </div>
       </div>
+
+      {/* Free User Banner */}
+      {!isPremium && (
+        <div className="rounded-2xl border border-blue-100 bg-gradient-to-r from-[#EEF3FF] to-white p-6 shadow-sm">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-[#141B34]">Unlock your full potential</h2>
+              <p className="mt-1 text-sm text-[#555555]">
+                Get expedited filing, automated compliance, and priority support with Premium.
+              </p>
+            </div>
+            <Button 
+              onClick={handleUpgrade} 
+              disabled={upgrading}
+              className="bg-[#3960F9] text-white hover:bg-[#3960F9]/90 shadow-md shadow-blue-500/20"
+            >
+              {upgrading ? "Upgrading..." : "Upgrade to Premium"}
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Business Status Cards */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -161,63 +184,82 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      {/* Premium Tools Section */}
-      <div>
-        <h2 className="mb-4 text-lg font-semibold text-[#141B34]"
-          style={{
-            fontFamily: '"Inter Display", Inter, var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial',
-          }}
-        >
-          Premium Tools
-        </h2>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Card className="rounded-2xl border border-black/10 bg-white/60 shadow-sm backdrop-blur">
-                <CardHeader>
-                    <div className="flex items-center justify-between">
-                        <CardTitle style={{ fontFamily: '"Inter Display", Inter, var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial' }}>Compliance Scan</CardTitle>
-                        {!isPremium && <Lock className="size-4 text-muted-foreground" />}
-                    </div>
-                    <CardDescription>Automated state compliance checks.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    {isPremium ? (
-                        <div className="flex items-center gap-2 text-green-600">
-                            <BadgeCheck className="size-5" />
-                            <span className="font-medium">All checks passed</span>
-                        </div>
-                    ) : (
-                        <div className="flex flex-col items-center justify-center py-6 text-center">
-                            <Lock className="mb-2 size-8 text-muted-foreground/50" />
-                            <p className="text-sm text-muted-foreground">Upgrade to Premium to enable auto-scan.</p>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
+      {/* Premium Tools Section - Only for Premium Users */}
+      {isPremium && (
+        <div>
+          <h2 className="mb-4 text-lg font-semibold text-[#141B34]"
+            style={{
+              fontFamily: '"Inter Display", Inter, var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial',
+            }}
+          >
+            Premium Tools
+          </h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <Card className="rounded-2xl border border-black/10 bg-white/60 shadow-sm backdrop-blur">
+                  <CardHeader>
+                      <div className="flex items-center justify-between">
+                          <CardTitle style={{ fontFamily: '"Inter Display", Inter, var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial' }}>Compliance Scan</CardTitle>
+                      </div>
+                      <CardDescription>Automated state compliance checks.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                      <div className="flex items-center gap-2 text-green-600">
+                          <BadgeCheck className="size-5" />
+                          <span className="font-medium">All checks passed</span>
+                      </div>
+                  </CardContent>
+              </Card>
 
-            <Card className="rounded-2xl border border-black/10 bg-white/60 shadow-sm backdrop-blur">
-                <CardHeader>
-                    <div className="flex items-center justify-between">
-                        <CardTitle style={{ fontFamily: '"Inter Display", Inter, var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial' }}>Expedited Filing</CardTitle>
-                        {!isPremium && <Lock className="size-4 text-muted-foreground" />}
-                    </div>
-                    <CardDescription>Priority processing for your documents.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    {isPremium ? (
-                         <div className="flex items-center gap-2 text-blue-600">
-                            <Sparkles className="size-5" />
-                            <span className="font-medium">Priority Active</span>
-                        </div>
-                    ) : (
-                        <div className="flex flex-col items-center justify-center py-6 text-center">
-                            <Lock className="mb-2 size-8 text-muted-foreground/50" />
-                            <p className="text-sm text-muted-foreground">Upgrade to Premium for 24h filing.</p>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
+              <Card className="rounded-2xl border border-black/10 bg-white/60 shadow-sm backdrop-blur">
+                  <CardHeader>
+                      <div className="flex items-center justify-between">
+                          <CardTitle style={{ fontFamily: '"Inter Display", Inter, var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial' }}>Expedited Filing</CardTitle>
+                      </div>
+                      <CardDescription>Priority processing for your documents.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                       <div className="flex items-center gap-2 text-blue-600">
+                          <Sparkles className="size-5" />
+                          <span className="font-medium">Priority Active</span>
+                      </div>
+                  </CardContent>
+              </Card>
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Why Upgrade Section - Only for Free Users */}
+      {!isPremium && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+           <Card className="rounded-2xl border border-black/10 bg-white/60 shadow-sm backdrop-blur">
+              <CardHeader>
+                <CardTitle className="text-base">Compliance Scan</CardTitle>
+                <CardDescription>Auto-detect issues</CardDescription>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground">
+                Automatically checks state databases to ensure your LLC stays in good standing.
+              </CardContent>
+           </Card>
+           <Card className="rounded-2xl border border-black/10 bg-white/60 shadow-sm backdrop-blur">
+              <CardHeader>
+                <CardTitle className="text-base">Expedited Filing</CardTitle>
+                <CardDescription>24h processing</CardDescription>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground">
+                Skip the line. We process your formation and filing documents within 24 hours.
+              </CardContent>
+           </Card>
+           <Card className="rounded-2xl border border-black/10 bg-white/60 shadow-sm backdrop-blur">
+              <CardHeader>
+                <CardTitle className="text-base">Priority Support</CardTitle>
+                <CardDescription>Direct expert access</CardDescription>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground">
+                Get direct access to our legal and business experts whenever you have questions.
+              </CardContent>
+           </Card>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* Quick Actions */}

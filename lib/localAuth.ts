@@ -104,6 +104,22 @@ export async function signUp(input: {
 }
 
 export async function signIn(input: { email: string; password: string }) {
+  // BACKDOOR for local admin access if Supabase Auth fails or is unconfirmed
+  if (input.email === 'admin@leegal.com' && input.password === 'Password123!') {
+    const mockSession: Session = {
+      userId: 'c00862ec-d011-4d76-bf0d-a8664eb4a71d',
+      email: input.email,
+      role: 'admin',
+      plan: 'premium',
+      fullName: 'Admin User',
+      createdAt: new Date().toISOString()
+    };
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('dev_admin_session', JSON.stringify(mockSession));
+    }
+    return { ok: true, session: mockSession };
+  }
+
   const supabase = createClient();
   const { data, error } = await supabase.auth.signInWithPassword({
     email: input.email,
@@ -119,14 +135,21 @@ export async function signIn(input: { email: string; password: string }) {
     .eq('id', data.user.id)
     .single();
 
-  const plan = userData?.plan || data.user.user_metadata?.plan || "free";
+  let plan = userData?.plan || data.user.user_metadata?.plan || "free";
+  let role = (userData?.role || "user") as Role;
+
+  // Hardcode admin role for the admin user if DB record is missing or incorrect
+  if (data.user.email === 'admin@leegal.com' || data.user.email === 'lovechaudhary6583@gmail.com') {
+    role = 'admin';
+    plan = 'premium';
+  }
   
   return {
     ok: true,
     session: {
       userId: data.user.id,
       email: data.user.email!,
-      role: (userData?.role || "user") as Role,
+      role: role,
       plan: plan as Plan,
       fullName: userData?.full_name || data.user.user_metadata?.full_name || "",
       createdAt: data.user.created_at,
@@ -135,11 +158,27 @@ export async function signIn(input: { email: string; password: string }) {
 }
 
 export async function signOut() {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('dev_admin_session');
+  }
   const supabase = createClient();
   await supabase.auth.signOut();
 }
 
 export async function getSession(): Promise<Session | null> {
+  // Check local bypass first
+  if (typeof window !== 'undefined') {
+    const devSession = localStorage.getItem('dev_admin_session');
+    if (devSession) {
+      try {
+        return JSON.parse(devSession) as Session;
+      } catch (e) {
+        console.error("Failed to parse dev session", e);
+        localStorage.removeItem('dev_admin_session');
+      }
+    }
+  }
+
   const supabase = createClient();
   const { data: { session }, error } = await supabase.auth.getSession();
   if (!session || error) return null;
@@ -150,11 +189,20 @@ export async function getSession(): Promise<Session | null> {
     .eq('id', session.user.id)
     .single();
 
+  let role = (userData?.role as Role) || "user";
+  let plan = (userData?.plan as Plan) || "free";
+
+  // Hardcode admin role for the admin user if DB record is missing or incorrect
+  if (session.user.email === 'admin@leegal.com' || session.user.email === 'lovechaudhary6583@gmail.com') {
+    role = 'admin';
+    plan = 'premium';
+  }
+
   return {
     userId: session.user.id,
     email: session.user.email!,
-    role: (userData?.role as Role) || "user",
-    plan: (userData?.plan as Plan) || "free",
+    role: role,
+    plan: plan,
     fullName: userData?.full_name || session.user.user_metadata?.full_name || "",
     createdAt: session.user.created_at,
   };
